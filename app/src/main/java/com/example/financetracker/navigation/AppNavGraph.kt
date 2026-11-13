@@ -14,13 +14,18 @@ import androidx.navigation.navArgument
 import com.example.financetracker.ui.auth.LoginScreen
 import com.example.financetracker.ui.auth.OnboardingScreen
 import com.example.financetracker.ui.auth.RegisterScreen
+import com.example.financetracker.ui.categories.CategoriesScreen
 import com.example.financetracker.ui.components.MainScaffold
 import com.example.financetracker.ui.dashboard.DashboardScreen
 import com.example.financetracker.ui.goals.AddSavingScreen
 import com.example.financetracker.ui.goals.GoalDetailScreen
 import com.example.financetracker.ui.goals.GoalFormScreen
 import com.example.financetracker.ui.goals.GoalsScreen
+import com.example.financetracker.ui.insight.InsightScreen
+import com.example.financetracker.ui.profile.ProfileScreen
 import com.example.financetracker.ui.transactions.AddTransactionScreen
+import com.example.financetracker.ui.transactions.FilterTransactionScreen
+import com.example.financetracker.ui.transactions.TransactionDetailScreen
 import com.example.financetracker.ui.transactions.TransactionsScreen
 import com.example.financetracker.ui.wallet.TransferScreen
 import com.example.financetracker.ui.wallet.WalletFormScreen
@@ -123,8 +128,20 @@ fun AppNavGraph(navController: NavHostController) {
                 onSave = { navController.popBackStack() },
             )
         }
-        composable(Routes.TRANSACTION_DETAIL) { Placeholder("Detail Transaksi") }
-        composable(Routes.FILTER) { Placeholder("Filter") }
+        composable(Routes.TRANSACTION_DETAIL) { entry ->
+            val id = entry.arguments?.getString("id")
+            TransactionDetailScreen(
+                transactionId = id,
+                onBack = { navController.popBackStack() },
+                onEdit = { navController.navigate(Routes.ADD_TRANSACTION) },
+            )
+        }
+        composable(Routes.FILTER) {
+            FilterTransactionScreen(
+                onBack = { navController.popBackStack() },
+                onApply = { navController.popBackStack() },
+            )
+        }
 
         // ---- Wallet ----
         composable(Routes.TRANSFER) {
@@ -179,9 +196,24 @@ fun AppNavGraph(navController: NavHostController) {
             )
         }
 
-        // ---- Belum dibuat (tahap berikutnya) ----
-        composable(Routes.INSIGHT) { Placeholder("Insight") }
-        composable(Routes.PROFILE) { Placeholder("Profil") }
-        composable(Routes.CATEGORIES) { Placeholder("Kategori") }
+        // ---- Layar Tambahan Sesuai Prototipe ----
+        composable(Routes.INSIGHT) {
+            InsightScreen(onBack = { navController.popBackStack() })
+        }
+        composable(Routes.PROFILE) {
+            ProfileScreen(
+                onBack = { navController.popBackStack() },
+                onNavigateCategories = { navController.navigate(Routes.CATEGORIES) },
+                onNavigateWallets = { navController.navigate(Routes.WALLET) },
+                onLogout = {
+                    navController.navigate(Routes.LOGIN) {
+                        popUpTo(0) { inclusive = true }
+                    }
+                },
+            )
+        }
+        composable(Routes.CATEGORIES) {
+            CategoriesScreen(onBack = { navController.popBackStack() })
+        }
     }
 }

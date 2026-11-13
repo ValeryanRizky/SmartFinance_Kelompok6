@@ -20,3 +20,13 @@ val Income = Color(0xFF24563F)
 val Expense = Color(0xFFB3412E)
 val Warning = Color(0xFFC9922A)
 val Info = Color(0xFF2F5F96)
+
+// Aliases untuk konsistensi di seluruh komponen
+val ForestDeep = Primary
+val ForestLight = Secondary
+val PrimaryGround = Background
+val CardBorder = Outline
+val IncomeGreen = Income
+val ExpenseRed = Expense
+val WarningAmber = Warning
+val TransferBlue = Info
